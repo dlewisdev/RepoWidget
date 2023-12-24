@@ -9,53 +9,75 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    func placeholder(in context: Context) -> RepoEntry {
+        RepoEntry(date: Date(), repo: Repository.placeholder)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (RepoEntry) -> ()) {
+        let entry = RepoEntry(date: Date(), repo: Repository.placeholder)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
-        }
+        var entries: [RepoEntry] = []
 
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct RepoEntry: TimelineEntry {
     let date: Date
-    let emoji: String
+    let repo: Repository
 }
 
 struct RepoWatcherWidgetEntryView : View {
-    var entry: Provider.Entry
+    var entry: RepoEntry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Emoji:")
-            Text(entry.emoji)
+        HStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Circle()
+                        .frame(width: 50, height: 50)
+                    
+                    Text(entry.repo.name)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .minimumScaleFactor(0.6)
+                        .lineLimit(1)
+                }
+                .padding(.bottom, 6)
+                
+                HStack {
+                    StatLabel(value: entry.repo.watchers, systemImageName: "star.fill")
+                    StatLabel(value: entry.repo.forks, systemImageName: "tuningfork")
+                    StatLabel(value: entry.repo.openIssues, systemImageName: "exclamationmark.triangle.fill")
+                }
+            }
+            
+            Spacer()
+            
+            VStack {
+                Text("99")
+                    .bold()
+                    .font(.system(size: 70))
+                    .frame(width: 90)
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+                
+                Text("days ago")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
         }
+       
     }
 }
 
 struct RepoWatcherWidget: Widget {
     let kind: String = "RepoWatcherWidget"
-
+    
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(iOS 17.0, *) {
@@ -69,12 +91,29 @@ struct RepoWatcherWidget: Widget {
         }
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
+        .supportedFamilies([.systemMedium])
     }
 }
 
-#Preview(as: .systemSmall) {
+fileprivate struct StatLabel: View {
+    let value: Int
+    let systemImageName: String
+    
+    var body: some View {
+        Label {
+            Text("\(value)")
+                .font(.footnote)
+        } icon: {
+            Image(systemName: systemImageName)
+                .foregroundStyle(.green)
+        }
+        .fontWeight(.medium)
+    }
+}
+
+#Preview(as: .systemMedium) {
     RepoWatcherWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    RepoEntry(date: .now, repo: Repository.placeholder)
+    RepoEntry(date: .now, repo: Repository.placeholder)
 }

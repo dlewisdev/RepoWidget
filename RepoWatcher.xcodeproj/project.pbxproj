@@ -17,6 +17,8 @@
 		719A5A3A2B37C14900E0524F /* RepoWatcherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A5A392B37C14900E0524F /* RepoWatcherWidget.swift */; };
 		719A5A3C2B37C14900E0524F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 719A5A3B2B37C14900E0524F /* Assets.xcassets */; };
 		719A5A402B37C14900E0524F /* RepoWatcherWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 719A5A302B37C14900E0524F /* RepoWatcherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		719A5A472B37C57D00E0524F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A5A452B37C57900E0524F /* Repository.swift */; };
+		719A5A482B37C58300E0524F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A5A452B37C57900E0524F /* Repository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,7 @@
 		719A5A392B37C14900E0524F /* RepoWatcherWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoWatcherWidget.swift; sourceTree = "<group>"; };
 		719A5A3B2B37C14900E0524F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		719A5A3D2B37C14900E0524F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		719A5A452B37C57900E0524F /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +133,7 @@
 			children = (
 				719A5A372B37C14900E0524F /* RepoWatcherWidgetBundle.swift */,
 				719A5A392B37C14900E0524F /* RepoWatcherWidget.swift */,
+				719A5A452B37C57900E0524F /* Repository.swift */,
 				719A5A3B2B37C14900E0524F /* Assets.xcassets */,
 				719A5A3D2B37C14900E0524F /* Info.plist */,
 			);
@@ -239,6 +243,7 @@
 			files = (
 				719A5A212B37C13000E0524F /* ContentView.swift in Sources */,
 				719A5A1F2B37C13000E0524F /* RepoWatcherApp.swift in Sources */,
+				719A5A482B37C58300E0524F /* Repository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +253,7 @@
 			files = (
 				719A5A3A2B37C14900E0524F /* RepoWatcherWidget.swift in Sources */,
 				719A5A382B37C14900E0524F /* RepoWatcherWidgetBundle.swift in Sources */,
+				719A5A472B37C57D00E0524F /* Repository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
