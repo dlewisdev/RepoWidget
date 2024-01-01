@@ -16,15 +16,6 @@ struct Repository {
     let openIssues: Int
     let pushedAt: String
     var avatarData: Data
-    
-    static let placeholder = Repository(name: "Your Repo", 
-                                        owner: Owner(avatarUrl: ""),
-                                        hasIssues: true,
-                                        forks: 22,
-                                        watchers: 444, 
-                                        openIssues: 24,
-                                        pushedAt: "2023-11-22T03:01:53Z",
-                                        avatarData: Data())
 }
 
 extension Repository {

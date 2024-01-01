@@ -10,11 +10,11 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> RepoEntry {
-        RepoEntry(date: Date(), repo: Repository.placeholder)
+        RepoEntry(date: Date(), topRepo: MockData.repoOne, bottomRepo: MockData.repoTwo)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (RepoEntry) -> ()) {
-        let entry = RepoEntry(date: Date(), repo: Repository.placeholder)
+        let entry = RepoEntry(date: Date(), topRepo: MockData.repoOne, bottomRepo: MockData.repoTwo)
         completion(entry)
     }
 
@@ -23,10 +23,23 @@ struct Provider: TimelineProvider {
             let nextUpdate = Date().addingTimeInterval(43200) // 12 hours in seconds
             
             do {
-                var repo = try await NetworkManager.shared.getRepo(atURL: RepoURL.swiftNews)
+                // Get Top Repo
+                var repo = try await NetworkManager.shared.getRepo(atURL: RepoURL.publish)
                 let avatarImageData = await NetworkManager.shared.downloadImageData(from: repo.owner.avatarUrl)
                 repo.avatarData = avatarImageData ?? Data()
-                let entry = RepoEntry(date: .now, repo: repo)
+                
+                // Get Bottom Repo if in Large Widget
+                var bottomRepo: Repository?
+        
+                if context.family == .systemLarge {
+                    bottomRepo = try await NetworkManager.shared.getRepo(atURL: RepoURL.coinInfo)
+                    // These lines are only going to be run if the async networking func above is successful, so we can force unwrap bottomRepo.
+                    let avatarImageData = await NetworkManager.shared.downloadImageData(from: bottomRepo!.owner.avatarUrl)
+                    bottomRepo!.avatarData = avatarImageData ?? Data()
+                }
+                
+                // Create Entry & Timeline
+                let entry = RepoEntry(date: .now, topRepo: repo, bottomRepo: bottomRepo)
                 let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
                 completion(timeline)
             } catch {
@@ -38,7 +51,8 @@ struct Provider: TimelineProvider {
 
 struct RepoEntry: TimelineEntry {
     let date: Date
-    let repo: Repository
+    let topRepo: Repository
+    let bottomRepo: Repository?
 }
 
 struct RepoWatcherWidgetEntryView : View {
@@ -49,11 +63,13 @@ struct RepoWatcherWidgetEntryView : View {
     var body: some View {
         switch family {
         case .systemMedium:
-            RepoMediumView(repo: entry.repo)
+            RepoMediumView(repo: entry.topRepo)
         case .systemLarge:
             VStack(spacing: 86) {
-                RepoMediumView(repo: entry.repo)
-                RepoMediumView(repo: entry.repo)
+                RepoMediumView(repo: entry.topRepo)
+                if let bottomRepo = entry.bottomRepo {
+                    RepoMediumView(repo: bottomRepo)
+                }
             }
         case .systemSmall, .systemExtraLarge, .accessoryCircular, .accessoryRectangular, .accessoryInline:
             EmptyView()
@@ -89,6 +105,6 @@ struct RepoWatcherWidget: Widget {
 #Preview(as: .systemLarge) {
     RepoWatcherWidget()
 } timeline: {
-    RepoEntry(date: .now, repo: Repository.placeholder)
-    RepoEntry(date: .now, repo: Repository.placeholder)
+    RepoEntry(date: .now, topRepo: MockData.repoOne, bottomRepo: MockData.repoTwo)
+    RepoEntry(date: .now, topRepo: MockData.repoOne, bottomRepo: MockData.repoTwo)
 }
