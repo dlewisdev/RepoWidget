@@ -17,6 +17,7 @@ struct ContributorMediumView: View {
                 Text("Top Contributors")
                     .font(.caption).bold()
                     .foregroundStyle(.secondary)
+                    .padding(.bottom, 5)
                 Spacer()
             }
             
@@ -25,18 +26,18 @@ struct ContributorMediumView: View {
                       alignment: .leading,
                       spacing: 20) {
                 
-                ForEach(0..<4) { i in
+                ForEach(repo.contributors) { contributor in
                     HStack {
-                        Image(.avatar)
+                        Image(uiImage: UIImage(data: contributor.avatarData) ?? UIImage(named: "avatar")!)
                             .resizable()
                             .frame(width: 44, height: 44)
                             .clipShape(Circle())
                         
                         VStack(alignment: .leading) {
-                            Text("Danielle Lewis")
+                            Text(contributor.login)
                                 .font(.caption)
                                 .minimumScaleFactor(0.7)
-                            Text("22")
+                            Text("\(contributor.contributions)")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
