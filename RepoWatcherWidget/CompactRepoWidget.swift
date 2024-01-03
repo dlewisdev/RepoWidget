@@ -65,7 +65,7 @@ struct CompactRepoEntryView : View {
         case .systemMedium:
             RepoMediumView(repo: entry.topRepo)
         case .systemLarge:
-            VStack(spacing: 86) {
+            VStack(spacing: 56) {
                 RepoMediumView(repo: entry.topRepo)
                 if let bottomRepo = entry.bottomRepo {
                     RepoMediumView(repo: bottomRepo)
