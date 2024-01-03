@@ -40,6 +40,8 @@ struct ContributorMediumView: View {
                             Text("\(contributor.contributions)")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
+                                .id(repo.name)
+                                .transition(.push(from: .trailing))
                         }
                     }
                 }
@@ -53,10 +55,9 @@ struct ContributorMediumView: View {
     }
 }
 
-struct ContributorMediumView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContributorMediumView(repo: MockData.repoOne)
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-            .containerBackground(for: .widget) { }
-    }
+#Preview(as: .systemLarge) {
+    ContributorWidget()
+} timeline: {
+    ContributorEntry(date: .now, repo: MockData.repoOne)
+    ContributorEntry(date: .now, repo: MockData.repoOneV2)
 }

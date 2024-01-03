@@ -51,6 +51,7 @@ struct RepoMediumView: View {
                     .minimumScaleFactor(0.6)
                     .lineLimit(1)
                     .foregroundStyle(daysSinceLastActivity > 50 ? .pink : .green)
+                    .contentTransition(.numericText())
                 
                 Text("days ago")
                     .font(.caption2)
@@ -75,6 +76,7 @@ fileprivate struct StatLabel: View {
         Label {
             Text("\(value)")
                 .font(.footnote)
+                .contentTransition(.numericText())
         } icon: {
             Image(systemName: systemImageName)
                 .foregroundStyle(.green)
@@ -83,12 +85,9 @@ fileprivate struct StatLabel: View {
     }
 }
 
-
-
-struct RepoMediumView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoMediumView(repo: MockData.repoOne)
-            .previewContext(WidgetPreviewContext(family: .systemLarge))
-            .containerBackground(for: .widget) { }
-    }
+#Preview(as: .systemMedium) {
+    CompactRepoWidget()
+} timeline: {
+    CompactRepoEntry(date: .now, topRepo: MockData.repoOne, bottomRepo: nil)
+    CompactRepoEntry(date: .now, topRepo: MockData.repoOneV2, bottomRepo: nil)
 }

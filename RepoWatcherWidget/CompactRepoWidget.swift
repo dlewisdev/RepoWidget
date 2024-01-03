@@ -65,7 +65,7 @@ struct CompactRepoEntryView : View {
         case .systemMedium:
             RepoMediumView(repo: entry.topRepo)
         case .systemLarge:
-            VStack(spacing: 56) {
+            VStack(spacing: 66) {
                 RepoMediumView(repo: entry.topRepo)
                 if let bottomRepo = entry.bottomRepo {
                     RepoMediumView(repo: bottomRepo)
@@ -89,11 +89,12 @@ struct CompactRepoWidget: Widget {
         StaticConfiguration(kind: kind, provider: CompactRepoProvider()) { entry in
             if #available(iOS 17.0, *) {
                 CompactRepoEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
+                    .containerBackground(for: .widget) { }
             } else {
                 CompactRepoEntryView(entry: entry)
                     .padding()
                     .background()
+                    .containerBackground(for: .widget) { }
             }
         }
         .configurationDisplayName("Repo Watcher")

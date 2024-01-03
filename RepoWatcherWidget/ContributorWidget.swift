@@ -97,6 +97,6 @@ struct ContributorWidget: Widget {
     ContributorWidget()
 } timeline: {
     ContributorEntry(date: .now, repo: MockData.repoOne)
-    ContributorEntry(date: .now, repo: MockData.repoTwo)
+    ContributorEntry(date: .now, repo: MockData.repoOneV2)
 }
 
